@@ -8,5 +8,5 @@ public class Wind {
     @JsonProperty("speed")
     private double speed;
     @JsonProperty("deg")
-    private double deg;
+    private double dir;
 }

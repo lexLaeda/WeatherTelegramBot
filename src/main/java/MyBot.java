@@ -1,5 +1,5 @@
 import bean.Request;
-import bean.User;
+
 import exception.comandexception.NotACommandException;
 import myenum.Command;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
@@ -34,7 +34,6 @@ public abstract class MyBot extends TelegramLongPollingBot {
                 sb.append(arg);
                 sb.append(" ");
             }
-            sb.toString();
             return new Request(command,sb.toString().trim());
         } else if(userRequest.startsWith("/")){
             Command command = Command.valueOf(words[0].substring(1).toUpperCase());
