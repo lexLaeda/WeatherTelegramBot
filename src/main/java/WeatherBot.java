@@ -1,8 +1,7 @@
-import bean.Request;
+import model.Request;
 import jason.WeatherCal;
+import model.Weather;
 import myenum.Command;
-import org.telegram.telegrambots.meta.api.objects.Chat;
-import org.telegram.telegrambots.meta.api.objects.Location;
 import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import personal.BotNameToken;
@@ -10,7 +9,6 @@ import personal.BotNameToken;
 import java.util.Locale;
 
 public class WeatherBot extends MyBot implements BotNameToken {
-    private WeatherCal weatherCal = new WeatherCal();
 
     @Override
     public void onUpdateReceived(Update update) {
@@ -43,7 +41,8 @@ public class WeatherBot extends MyBot implements BotNameToken {
     }
 
     private String getDailyWeather(String text) {
-        return weatherCal.getDaylyWeather(text);
+        Weather weather = WeatherCal.getWeather(text);
+        return WeatherForecast.getWeatherDescription(weather);
     }
 
     private String commandList() {

@@ -1,9 +1,7 @@
 package jason;
 
-import bean.weather.Weather;
+import model.Weather;
 
-import bean.weather.inweather.TempPressure;
-import bean.weather.inweather.Wind;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import exception.openweather.CityNotFoundException;
 import personal.BotNameToken;
@@ -16,22 +14,10 @@ import java.util.regex.Pattern;
 public class WeatherCal implements BotNameToken {
     private final static String CITYKEY = "q=";
     private final static String UNITS = "units=metric";
-    private final String OPENWETHERADRESS = "http://api.openweathermap.org/data/2.5/weather?";
-    private final String del = "&";
-    private final static String DIG = "℃";
-    private final static String PERCENT = "%";
+    private final static String OPENWETHERADRESS = "http://api.openweathermap.org/data/2.5/weather?";
+    private final static String del = "&";
 
-    public String getDaylyWeather(String cityName){
-        Weather weather = getWeather(cityName);
-
-        return getDaylyWeather(
-                weather.getTempPressure().getTemp(),
-                weather.getTempPressure().getFeelsLike(),
-                weather.getTempPressure().getHumidity(),
-                weather.getWind().getSpeed(),
-                weather.getWind().getDir());
-    }
-    public Weather getWeather(String cityName)  {
+    public static Weather getWeather(String cityName)  {
         ObjectMapper mapper = new ObjectMapper();
         try {
             return mapper.readValue(getJasonString(cityName), Weather.class);
@@ -40,20 +26,9 @@ public class WeatherCal implements BotNameToken {
             throw new CityNotFoundException(e.getMessage());
         }
     }
-    private String getDaylyWeather(String temp, String feelsLike, String humidity,double windSpeed, double windDir){
-        StringBuilder sb = new StringBuilder();
-        sb.append(String.format(Locale.ENGLISH,"Температура в тени %s %s",temp,DIG));
-        sb.append("\n");
-        sb.append(String.format(Locale.ENGLISH,"Ощущается как %s %s",feelsLike,DIG));
-        sb.append("\n");
-        sb.append(String.format(Locale.ENGLISH,"Влажность %s %s",humidity,PERCENT));
-        sb.append("\n");
-        sb.append(String.format(Locale.ENGLISH,"Ветер %s скорость %s м/с",getWindDirection(windDir),windSpeed));
-        sb.append("\n");
-        return sb.toString();
-    }
 
-    private String getJasonString(String cityName){
+
+    private static String getJasonString(String cityName){
         String httpRequet;
         if (cityName != null && isEng(cityName)){
             httpRequet = OPENWETHERADRESS + CITYKEY + cityName +
@@ -66,35 +41,17 @@ public class WeatherCal implements BotNameToken {
         }
         return MyDownLoader.getContent(httpRequet);
     }
-    private boolean isEng(String string){
+    private static boolean isEng(String string){
         Pattern pattern = Pattern.compile("[a-zA-Z]");
         Matcher matcher = pattern.matcher(string);
         return matcher.find();
     }
-    private boolean isRus(String string){
+    private static  boolean isRus(String string){
         Pattern pattern = Pattern.compile("[а-яА-Я]");
         Matcher matcher = pattern.matcher(string);
         return matcher.find();
     }
-    private String getWindDirection(double dir) {
-        if (0 <= dir && dir <= 22.5 || 337.5 <= dir) {
-            return "Северный";
-        } else if (22.5 < dir && dir <= 67.5) {
-            return "Северо-восточный";
-        } else if (67.5 < dir && dir <= 112.5) {
-            return "Восточный";
-        } else if (112.5 < dir && dir <= 157.5) {
-            return "Юго-восточный";
-        } else if (157.5 < dir && dir <= 202.5) {
-            return "Южный";
-        } else if (202.5 < dir && dir <= 247.5) {
-            return "Юго-западный";
-        } else if (247.5 < dir && dir <= 292.5) {
-            return "Западный";
-        } else {
-            return "Северо-западный";
-        }
-    }
+
 
 
 }

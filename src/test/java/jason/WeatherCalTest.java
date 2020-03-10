@@ -1,11 +1,8 @@
 package jason;
 
-import bean.weather.Weather;
+import model.Weather;
 import org.junit.Before;
 import org.junit.Test;
-
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import static org.junit.Assert.*;
 
@@ -54,7 +51,7 @@ public class WeatherCalTest {
     }
     @Test
     public void testGetDailyWeather(){
-        String dailyWeather = weatherCal.getDaylyWeather(cityEngLondon);
+        String dailyWeather = weatherCal.getDailyWeather(cityEngLondon);
         System.out.println(dailyWeather);
     }
 }

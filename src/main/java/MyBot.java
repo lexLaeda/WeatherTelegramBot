@@ -1,4 +1,4 @@
-import bean.Request;
+import model.Request;
 
 import exception.comandexception.NotACommandException;
 import myenum.Command;
